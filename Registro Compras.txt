@@ -1,0 +1,105 @@
+[
+	{
+		"Productos": [
+			{
+				"Name": "Nave",
+				"Description": "Esto es un perro",
+				"Thumbnail": "https://cdn1.iconfinder.com/data/icons/space-flat-galaxy-radio/512/UFO-512.png",
+				"Price": 2000,
+				"Stock": "2",
+				"id": 3
+			}
+		],
+		"id": 1,
+		"Timestamp": "1/4/2022 11:44:26"
+	},
+	{
+		"Productos": [
+			{
+				"Name": "Gato",
+				"Description": "Esto es un perro",
+				"Thumbnail": "https://cdn1.iconfinder.com/data/icons/space-flat-galaxy-radio/512/UFO-512.png",
+				"Price": 2000,
+				"Stock": "2",
+				"id": 2
+			}
+		],
+		"id": 2,
+		"Timestamp": "1/4/2022 12:13:41"
+	},
+	{
+		"Productos": [
+			{
+				"Name": "Na",
+				"Description": "Esto es un perro",
+				"Thumbnail": "https://cdn1.iconfinder.com/data/icons/space-flat-galaxy-radio/512/UFO-512.png",
+				"Price": 2000,
+				"Stock": "2",
+				"id": 3
+			}
+		],
+		"id": 3,
+		"Timestamp": "1/4/2022 12:13:55"
+	},
+	{
+		"Productos": [],
+		"id": 4,
+		"Timestamp": "1/4/2022 12:13:56"
+	},
+	{
+		"Productos": [
+			{
+				"Name": "Nave",
+				"Description": "Esto es un perro",
+				"Thumbnail": "https://cdn1.iconfinder.com/data/icons/space-flat-galaxy-radio/512/UFO-512.png",
+				"Price": 2000,
+				"Stock": "2",
+				"id": 3
+			}
+		],
+		"id": 5,
+		"Timestamp": "3/4/2022 14:57:31"
+	},
+	{
+		"Productos": [
+			{
+				"Name": "Nave",
+				"Description": "Esto es un perro",
+				"Thumbnail": "https://cdn1.iconfinder.com/data/icons/space-flat-galaxy-radio/512/UFO-512.png",
+				"Price": 2000,
+				"Stock": "2",
+				"id": 3
+			}
+		],
+		"id": 6,
+		"Timestamp": "3/4/2022 14:57:43"
+	},
+	{
+		"Productos": [
+			{
+				"Name": "Nave",
+				"Description": "Esto es un perro",
+				"Thumbnail": "https://cdn1.iconfinder.com/data/icons/space-flat-galaxy-radio/512/UFO-512.png",
+				"Price": 2000,
+				"Stock": "2",
+				"id": 3
+			}
+		],
+		"id": 7,
+		"Timestamp": "3/4/2022 14:58:08"
+	},
+	{
+		"Productos": [
+			{
+				"Name": "Nave",
+				"Description": "Esto es un perro",
+				"Thumbnail": "https://cdn1.iconfinder.com/data/icons/space-flat-galaxy-radio/512/UFO-512.png",
+				"Price": 2000,
+				"Stock": "2",
+				"id": 3
+			}
+		],
+		"id": 8,
+		"Timestamp": "3/4/2022 14:58:18"
+	}
+]

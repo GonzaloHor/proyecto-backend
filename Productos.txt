@@ -1,0 +1,46 @@
+[
+	{
+		"Name": "Nave",
+		"Description": "Es una nave",
+		"Thumbnail": "https://cdn1.iconfinder.com/data/icons/space-flat-galaxy-radio/512/UFO-512.png",
+		"Precio": 2000,
+		"Sotock": "2",
+		"id": 1,
+		"Timestamp": "1/4/2022 10:45:57"
+	},
+	{
+		"Name": "Perro",
+		"Description": "Esto es un perro",
+		"Thumbnail": "https://cdn1.iconfinder.com/data/icons/space-flat-galaxy-radio/512/UFO-512.png",
+		"Price": 2000,
+		"Stock": "2",
+		"id": 2
+	},
+	{
+		"Name": "Nave",
+		"Description": "Es una nave",
+		"Thumbnail": "https://cdn1.iconfinder.com/data/icons/space-flat-galaxy-radio/512/UFO-512.png",
+		"Precio": 2000,
+		"Sotock": "2",
+		"id": 3,
+		"Timestamp": "1/4/2022 10:46:45"
+	},
+	{
+		"Name": "Langosta",
+		"Description": "Esto es una langosta",
+		"Thumbnail": "https://cdn1.iconfinder.com/data/icons/space-flat-galaxy-radio/512/UFO-512.png",
+		"Price": 2000,
+		"Stock": "2",
+		"id": 4,
+		"Timestamp": "1/4/2022 11:17:52"
+	},
+	{
+		"Name": "Nave",
+		"Description": "Esto es un perro",
+		"Thumbnail": "https://cdn1.iconfinder.com/data/icons/space-flat-galaxy-radio/512/UFO-512.png",
+		"Price": 2000,
+		"Stock": "2",
+		"id": 5,
+		"Timestamp": "3/4/2022 15:05:24"
+	}
+]

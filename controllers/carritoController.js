@@ -19,8 +19,7 @@ class CreateFile{
  
         } catch (error){
             if(error.message == "Unexpected end of JSON input"){
-                let mensaje = "No hay contenido"
-                return mensaje
+                return []
             }
                
             console.log(`Hubo un error: ${error.message}`);
@@ -43,7 +42,126 @@ class CreateFile{
         }
 
     }
+
+    deleteById(id, productId){
+        const ruta = `./${this.nameFile}.txt`
+
+        try {
+            const datas = fs.readFileSync(ruta,'utf-8');
+            let registroCompras = JSON.parse(datas);
+
+            let compra = registroCompras.find(e => e.id == id)
+
+            if(compra == undefined) {compra = { error : 'Compra no encontrada' }; return(compra) }
+        
+            let index = registroCompras.indexOf(compra)
+            let productosEnCompra = registroCompras[index].Productos
+        
+            let producto = productosEnCompra.find(e => e.id == productId)
+            
+            if(producto == undefined) { producto = { error : 'Producto no encontrado en el carrito' } ; return(producto)}
+        
+            let nuevoObjeto = productosEnCompra.filter((e) => e.id !== producto.id)
+        
+            registroCompras[index].Productos = nuevoObjeto
+        
+            fs.writeFileSync(ruta,JSON.stringify(registroCompras, null, '\t'));
+        
+        
+            return (`Se elimió correctamente el siguiente producto con id: ${productId}`)
+
+
+
+
+        } catch (error){
+            return(`Hubo un error: ${error.message}`)
+        }
+
+
+    }
+
+    addProduct(id, newProduct){
+     const ruta = `./${this.nameFile}.txt`
+
+    try {
+        const datas = fs.readFileSync(ruta,'utf-8');
+        let registroCompras = JSON.parse(datas);
+        let compra = registroCompras.find(e => e.id == id)
+
+        if(!compra)return({error: 'Compra no encontrada'})
+        
+        let index = registroCompras.indexOf(compra)
+
+        registroCompras[index].Productos.push(newProduct);
+
+        fs.writeFileSync(ruta,JSON.stringify(registroCompras, null, '\t'));
+
+        return(`Se agrego correctamente el producto a tu carrito con id: ${id} `)          
+
+
+
+    } catch (error){     
+        
+        return(`Hubo un error: ${error.message}`)
+
+    }
+
+    }
+
+    deleteCarritoByid(id){
+        const ruta = `./${this.nameFile}.txt`
+
+        try {
+            const datas = fs.readFileSync(ruta,'utf-8');
+            let registroCompras = JSON.parse(datas);
+
+            let compra = registroCompras.find(e => e.id == id)
+            if(!compra)return({error: 'Compra no encontrada'})
+
+
+            let nuevoObjeto = registroCompras.filter((e) => e.id !== compra.id)
+            fs.writeFileSync(ruta,JSON.stringify(nuevoObjeto, null, '\t'));
+
+
+            return (`Se elimió correctamente compra con id: ${id}`)
+      
+        } catch (error) {
+            return(`Hubo un error: ${error.message}`)
+        }
+    }
     
+    addCarrito(newCarrito){
+        const ruta = `./${this.nameFile}.txt`
+
+        try {
+            const datas = fs.readFileSync(ruta,'utf-8');
+            let registroCompras = JSON.parse(datas);
+
+            newCarrito.id = registroCompras[registroCompras.length-1].id + 1;
+    
+            let dataTime = new Date();
+            let hoy = new Date(dataTime)
+                    
+            let fecha = hoy.toLocaleDateString()
+            let hora = hoy.toLocaleTimeString()
+                
+            let tiempoMensaje =  `${fecha} ${hora}`
+        
+            newCarrito.Timestamp = tiempoMensaje;
+        
+        
+            registroCompras.push(newCarrito)
+        
+            fs.writeFileSync(ruta,JSON.stringify(registroCompras, null, '\t'));
+        
+            
+            return(`Se genero correctamente tu compra con su id : ${newCarrito.id}`)      
+            
+        } catch (error) {
+            
+        }
+
+    }
 
 }
 
@@ -57,72 +175,23 @@ if(administrador === true ){
     
 router.post('/', (req, res)=>{
    
-    let registroCompras = Compras.readFile();
-    const newCompra = req.body
-
-    if (registroCompras == 'No hay contenido') {
-  
-    newCompra.id = 1
-
-    let dataTime = new Date();
-    let hoy = new Date(dataTime)
-            
-    let fecha = hoy.toLocaleDateString()
-    let hora = hoy.toLocaleTimeString()
-        
-    let tiempoMensaje =  `${fecha} ${hora}`
-
-    newCompra.Timestamp = tiempoMensaje;
-
-    Compras.writeFile([newCompra])
+    const newCarrito = req.body
 
     
-    res.send(`Se genero correctamente tu compra con su id : ${newCompra.id}`)           
-
-
-    } else {
-       
-        newCompra.id = registroCompras.length + 1
-    
-        let dataTime = new Date();
-        let hoy = new Date(dataTime)
-                
-        let fecha = hoy.toLocaleDateString()
-        let hora = hoy.toLocaleTimeString()
-            
-        let tiempoMensaje =  `${fecha} ${hora}`
-    
-        newCompra.Timestamp = tiempoMensaje;
-    
-    
-        registroCompras.push(newCompra)
-    
-        Compras.writeFile(registroCompras)
+    let respuesta = Compras.addCarrito(newCarrito)
     
         
-        res.send(`Se genero correctamente tu compra con su id : ${newCompra.id}`)                   
-    
-    };
-                  
+    res.send(respuesta)                   
+     
 });
 
 router.delete('/:id', (req, res)=>{
 
-    let registroCompras = Compras.readFile();
     const id = req.params.id
 
-    let compraBorrar = registroCompras.find(e => e.id == id)
-    if(compraBorrar == undefined) {
+    let respuesta = Compras.deleteCarritoByid(id)
 
-        compraBorrar = { error : 'Compra no encontrada' } 
-        res.send(compraBorrar) 
-    }
-
-    let nuevoObjeto = registroCompras.filter((e) => e.id !== compra.id)
-    Compras.writeFile(nuevoObjeto)
-
-
-    res.send(`Se elimió correctamente tu compra con id: ${id} `)          
+    res.send(respuesta)          
 
     
 });
@@ -132,11 +201,9 @@ router.get('/:id/productos', (req, res) =>{
     const id = req.params.id;
 
     let compra = registroCompras.find(e => e.id == id)
-    if(compra == undefined) {
 
-        compra = { error : 'Compra no encontrada' } 
-        res.send(compra) 
-    }
+    if(!compra)res.send({error: 'Compra no encontrada'})
+
 
     let index = registroCompras.indexOf(compra)
 
@@ -144,64 +211,28 @@ router.get('/:id/productos', (req, res) =>{
 })
 
 router.post('/:id/productos', (req, res) =>{
-    let registroCompras = Compras.readFile();
     const id = req.params.id;
-    const newProduct = req.body;
+
+    const {Name, Description, Thumbnail, Precio, Stock} = req.body
+
+    if(!Name || !Description || !Thumbnail ||  !Precio || !Stock) return res.send('Ingresa correctamente todos los campos (Name, Description, Thumbnail, Precio, Stock)')
+
+    const newProduct = {Name, Description, Thumbnail, Precio, Stock}
 
 
-    let compra = registroCompras.find(e => e.id == id)
-    if(compra == undefined) {
+    let respuesta = Compras.addProduct(id,newProduct)
 
-        compra = { error : 'Compra no encontrada' } 
-        res.send(compra) 
-    }
-
-    let index = registroCompras.indexOf(compra)
-
-    registroCompras[index].Productos.push(newProduct);
-
-    Compras.writeFile(registroCompras)
-
-    res.send(`Se agrego correctamente el producto a tu carrito con id: ${id} `)          
-
-
-
-
-
+    res.send(respuesta);      
 
 });
 
 router.delete('/:id/productos/:id_prod', (req, res)=>{
-    let registroCompras = Compras.readFile();
     const id = req.params.id;
     const productId = req.params.id_prod
 
-    let compra = registroCompras.find(e => e.id == id)
-    if(compra == undefined) {
 
-        compra = { error : 'Compra no encontrada' } 
-        res.send(compra) 
-    }
-
-    let index = registroCompras.indexOf(compra)
-    let productosEnCompra = registroCompras[index].Productos
-
-    let producto = productosEnCompra.find(e => e.id == productId)
-    if(producto == undefined) {
-
-        producto = { error : 'Producto no encontrado en el carrito' } 
-        res.send(producto) 
-    }
-
-    let nuevoObjeto = productosEnCompra.filter((e) => e.id !== producto.id)
-
-    registroCompras[index].Productos = nuevoObjeto
-
-    Compras.writeFile(registroCompras)
-
-
-    res.send(`Se elimió correctamente el siguiente producto con id: ${productId} `)  
-
+   let respuesta = Compras.deleteById(id, productId)
+    res.send(respuesta) ;
 });
 
 } else{

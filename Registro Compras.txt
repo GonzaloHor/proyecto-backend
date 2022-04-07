@@ -5,46 +5,12 @@
 				"Name": "Nave",
 				"Description": "Esto es un perro",
 				"Thumbnail": "https://cdn1.iconfinder.com/data/icons/space-flat-galaxy-radio/512/UFO-512.png",
-				"Price": 2000,
-				"Stock": "2",
-				"id": 3
+				"Precio": 2000,
+				"Stock": "20"
 			}
 		],
 		"id": 1,
 		"Timestamp": "1/4/2022 11:44:26"
-	},
-	{
-		"Productos": [
-			{
-				"Name": "Gato",
-				"Description": "Esto es un perro",
-				"Thumbnail": "https://cdn1.iconfinder.com/data/icons/space-flat-galaxy-radio/512/UFO-512.png",
-				"Price": 2000,
-				"Stock": "2",
-				"id": 2
-			}
-		],
-		"id": 2,
-		"Timestamp": "1/4/2022 12:13:41"
-	},
-	{
-		"Productos": [
-			{
-				"Name": "Na",
-				"Description": "Esto es un perro",
-				"Thumbnail": "https://cdn1.iconfinder.com/data/icons/space-flat-galaxy-radio/512/UFO-512.png",
-				"Price": 2000,
-				"Stock": "2",
-				"id": 3
-			}
-		],
-		"id": 3,
-		"Timestamp": "1/4/2022 12:13:55"
-	},
-	{
-		"Productos": [],
-		"id": 4,
-		"Timestamp": "1/4/2022 12:13:56"
 	},
 	{
 		"Productos": [

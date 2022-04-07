@@ -19,12 +19,11 @@ class CreateFile{
  
         } catch (error){
             if(error.message == "Unexpected end of JSON input"){
-                let mensaje = "No hay contenido"
-                return mensaje
+                return []
             }
                
-            console.log(`Hubo un error: ${error.message}`);
-            return
+            return(`Hubo un error: ${error.message}`);
+            
         }
 
     }
@@ -43,14 +42,99 @@ class CreateFile{
         }
 
     }
+
+    addProduct(producto){
+        const ruta = `./${this.nameFile}.txt`
+
+        try {
+            const datas = fs.readFileSync(ruta,'utf-8');
+            const todosLosProductos = JSON.parse(datas);
+
+            producto.id = todosLosProductos[todosLosProductos.length-1].id + 1
     
+            let dataTime = new Date();
+            let hoy = new Date(dataTime)
+                    
+            let fecha = hoy.toLocaleDateString()
+            let hora = hoy.toLocaleTimeString()
+                
+            let tiempoMensaje =  `${fecha} ${hora}`
+        
+            producto.Timestamp = tiempoMensaje;
+        
+        
+            todosLosProductos.push(producto)
+            fs.writeFileSync(ruta,JSON.stringify(todosLosProductos, null, '\t'));
+
+    
+            
+            return(`Se agregó correctamente el siguiente producto: ${producto.Name}`)      
+            
+        } catch (error) {
+            return(`Hubo un error: ${error.message}`);
+        }
+    }
+
+    modifyProduct(id,productoModificar){
+        const ruta = `./${this.nameFile}.txt`
+
+        try {
+            const datas = fs.readFileSync(ruta,'utf-8');
+            const todosLosProductos = JSON.parse(datas);
+
+
+            let producto = todosLosProductos.find(e => e.id == id)
+    
+
+            if(!producto)res.send({error: 'producto no encontrado'})
+        
+            let index = todosLosProductos.indexOf(producto)
+        
+            let idProducto = todosLosProductos[index].id
+        
+            todosLosProductos[index] = productoModificar;
+            todosLosProductos[index].id = idProducto
+        
+            fs.writeFileSync(ruta,JSON.stringify(todosLosProductos, null, '\t'));
+
+        
+            return(`Se modificó correctamente el siguiente producto con id: ${idProducto} `)     
+            
+        } catch (error) {
+            return(`Hubo un error: ${error.message}`);
+
+        }
+    }
+    
+
+    deleteById(id){
+        const ruta = `./${this.nameFile}.txt`
+
+        try {
+        const datas = fs.readFileSync(ruta,'utf-8');
+        const todosLosProductos = JSON.parse(datas);
+
+        let producto = todosLosProductos.find(e => e.id == id)
+        if(!producto)res.send({error: 'producto no encontrado'})
+
+        let nuevoObjeto = todosLosProductos.filter((e) => e.id !== producto.id)
+        productos.writeFile(nuevoObjeto)
+
+
+        return(`Se elimió correctamente el siguiente producto con id: ${id} `)        
+            
+        } catch (error) {
+            return(`Hubo un error: ${error.message}`);
+
+        }
+    }
 
 }
 
 
 let productos = new CreateFile('Productos');
 
-let administrador = false;
+let administrador = true;
 
 
 if(administrador === true ){
@@ -64,109 +148,47 @@ router.get('/:id?', (req, res)=>{
     
         let producto = todosLosProductos.find(e => e.id == id)
 
-
-        if(producto == undefined) {producto = { error : 'producto no encontrado' }}
-                        
+        if(!producto)res.send({error: 'producto no encontrado'})                        
         res.send(producto)          
     } else {
         res.send(todosLosProductos)
     }                
 });
 
-router.post('/:id?', (req, res)=>{
+router.post('/', (req, res)=>{
 
-    let todosLosProductos = productos.readFile();
-    const producto = req.body
+    const {Name, Description, Thumbnail, Precio, Stock} = req.body
 
-    if (todosLosProductos == 'No hay contenido') {
-  
-    producto.id = 1
+    if(!Name || !Description || !Thumbnail ||  !Precio || !Stock) return res.send('Ingresa correctamente todos los campos (Name, Description, Thumbnail, Precio, Stock)')
 
-    let dataTime = new Date();
-    let hoy = new Date(dataTime)
-            
-    let fecha = hoy.toLocaleDateString()
-    let hora = hoy.toLocaleTimeString()
-        
-    let tiempoMensaje =  `${fecha} ${hora}`
+    const producto = {Name, Description, Thumbnail, Precio, Stock}
 
-    producto.Timestamp = tiempoMensaje;
-
-    productos.writeFile([producto])
-
-    
-    res.send(`Se agregó correctamente el siguiente producto: ${producto.Name}`)           
-
-
-    } else {
-       
-        producto.id = todosLosProductos.length + 1
-    
-        let dataTime = new Date();
-        let hoy = new Date(dataTime)
-                
-        let fecha = hoy.toLocaleDateString()
-        let hora = hoy.toLocaleTimeString()
-            
-        let tiempoMensaje =  `${fecha} ${hora}`
-    
-        producto.Timestamp = tiempoMensaje;
-    
-    
-        todosLosProductos.push(producto)
-    
-        productos.writeFile(todosLosProductos)
+    let respuesta = productos.addProduct(producto)
     
         
-        res.send(`Se agregó correctamente el siguiente producto: ${producto.Name}`)          
-    
-    };
-    
+    res.send(respuesta)          
+
 });
 
 router.put('/:id?', (req, res)=>{
 
-    let todosLosProductos = productos.readFile();
     const productoModificar = req.body
-        const id = req.params.id
+    const id = req.params.id
 
+    let respuesta = productos.modifyProduct(id,productoModificar)
 
-    let producto = todosLosProductos.find(e => e.id == id)
-    
-
-    if(producto == undefined) {producto = { error : 'producto no encontrado' }, res.send(producto)}
-
-    let index = todosLosProductos.indexOf(producto)
-
-    let idProducto = todosLosProductos[index].id
-
-    todosLosProductos[index] = productoModificar;
-    todosLosProductos[index].id = idProducto
-
-    productos.writeFile(todosLosProductos)
-
-    res.send(`Se modificó correctamente el siguiente producto con id: ${idProducto} `)          
+    res.send(respuesta)          
 
     
 });
 
 router.delete('/:id?', (req, res)=>{
 
-    let todosLosProductos = productos.readFile();
     const id = req.params.id
+    
+    let respuesta = productos.deleteById(id)
 
-    let producto = todosLosProductos.find(e => e.id == id)
-    if(producto == undefined) {
-
-        producto = { error : 'producto no encontrado' } 
-        res.send(producto) 
-    }
-
-    let nuevoObjeto = todosLosProductos.filter((e) => e.id !== producto.id)
-    productos.writeFile(nuevoObjeto)
-
-
-    res.send(`Se elimió correctamente el siguiente producto con id: ${id} `)          
+    res.send(respuesta)          
 
     
 });

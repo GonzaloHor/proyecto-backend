@@ -85,19 +85,22 @@ class ContenedorMongo {
   }
 
   async actualizar(objeto, id) {
-
+    mongoose.connect("mongodb://localhost:27017/ecommerce", {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
 
     try {
       if (this.collection === "Productos"){
 
 
-        await Productos.findOneAndUpdate({id:id},{
-          "Name": objeto.Name,
-          "Description": objeto.Description,
-          "Thumbnail": objeto.Thumbnail,
-          "Precio": objeto.Precio,
-          "Stock": objeto.Stock,
-        });
+          await Productos.findOneAndUpdate({id:id},{
+            "Name": objeto.Name,
+            "Description": objeto.Description,
+            "Thumbnail": objeto.Thumbnail,
+            "Precio": objeto.Precio,
+            "Stock": objeto.Stock,
+          });
 
         
 
@@ -119,8 +122,28 @@ class ContenedorMongo {
 
  
     try {
+
+      mongoose.connect("mongodb://localhost:27017/ecommerce", {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      });
+
+
+
      
-    
+      if (this.collection === "Productos"){
+
+        const res = await Productos.deleteOne({id:id});
+
+        return(res)
+
+      } else if(this.collection === "Carritos"){
+
+        const res = await Carritos.deleteOne({id:id});
+
+        return(res)
+      }
+
     } catch (error) {
       throw new Error(`Error al guardar: ${error}`)
     }
